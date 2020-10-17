@@ -1,9 +1,11 @@
+require('dotenv-flow').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
+const mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -44,5 +46,15 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// set up database connection
+const mongoURI = process.env.mongoURI;
+mongoose.connect(mongoURI);
+
+const db = mongoose.connection;
+
+db.on('connected', console.log.bind(console, 'Established connection with MongoDB'));
+
+
 
 module.exports = app;
