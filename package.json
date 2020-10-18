@@ -6,6 +6,8 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "axios": "^0.20.0",
+    "connect-history-api-fallback": "^1.6.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv-flow": "^3.2.0",
@@ -15,9 +17,10 @@
     "mongoose": "^5.10.9",
     "morgan": "~1.9.1",
     "node-sass-middleware": "0.11.0",
-    "nodemon": "^2.0.5"
+    "nodemon": "^2.0.5",
+    "vue": "^2.6.12"
   },
   "devDependencies": {
-    "prettier": "^2.1.2"
+    "dotenv-flow": "^3.2.0"
   }
 }

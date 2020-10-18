@@ -119,3 +119,7 @@ dist
 .idea
 *.iml
 
+.env.local
+
+/public
+
