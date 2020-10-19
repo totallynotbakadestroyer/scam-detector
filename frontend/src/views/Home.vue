@@ -1,18 +1,103 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-  </div>
+  <v-container class="text-center">
+    <div>
+      <h5 class="display-3">Welcome to scam-detector!</h5>
+    </div>
+    <v-divider class="my-4"/>
+    <div>
+      <h6 class="display-1 mb-4">What is scam-detector?</h6>
+      <p>
+        <strong>Scam-detector</strong> is a simple tool used to check if user is
+        already reported as a scammer or report scammer by yourself!
+      </p>
+    </div>
+    <div>
+      <v-expansion-panels accordion>
+        <v-expansion-panel>
+          <v-expansion-panel-header hide-actions>
+            <h3 class="text-center">Check user</h3>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            Feeling suspicious, huh? Write this user id below and check if
+            that user was already reported by someone!
+            <v-alert
+                v-if="result"
+                prominent
+                class="text-left"
+                :type="result.type"
+            >
+              {{ result.text }} You can check the full review
+              <a href="#">here</a>
+            </v-alert>
+            <v-text-field
+                class="mt-4"
+                color="green"
+                label="User id"
+                v-model="userId"
+                :append-icon="userId ? 'mdi-send' : undefined"
+                @click:append="checkUser"
+            ></v-text-field>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+        <v-expansion-panel>
+          <v-expansion-panel-header hide-actions>
+            <h3 class="text-center">Report user</h3>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            In order to report someone, please login using your VK account:
+            <v-spacer/>
+            <v-btn color="primary" class="mt-4">Login!</v-btn>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </div>
+  </v-container>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import axios from "axios";
 
 export default {
   name: "Home",
-  components: {
-    HelloWorld
-  }
+  data() {
+    return {
+      userId: "",
+      result: "",
+      resultType: [
+        {
+          type: "success",
+          text:
+              "There is nothing bad about this user in our database. Stay cautious anyway!",
+        },
+        {
+          type: "warning",
+          text:
+              "This user was reported as a potential scammer. However, we can't proof it yet. Stay cautious!",
+        },
+        {
+          type: "error",
+          text: "Yep, that is a 100% percent scammer. Stay cautious.",
+        },
+      ],
+    };
+  },
+  methods: {
+    checkUser() {
+      axios.get(`/api/users/check/${this.userId}`)
+          .then((result) => {
+            switch (result.data.status) {
+              case 'Warning':
+                this.result = {...this.resultType[1], id: this.userId};
+                break;
+              case 'Scammer':
+                this.result = {...this.resultType[2], id: this.userId};
+                break;
+              default:
+                this.result = {...this.resultType[0], id: this.userId};
+                break;
+            }
+          });
+    },
+  },
 };
 </script>
