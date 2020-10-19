@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+const scammerController = require('../controllers/scammerController.js');
+
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.get('/check/:id', scammerController.scammerStatus);
 
 module.exports = router;
