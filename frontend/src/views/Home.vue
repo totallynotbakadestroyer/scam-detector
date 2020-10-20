@@ -45,8 +45,8 @@
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             In order to report someone, please
-            <a @click.stop="loginForm = true">login</a> using your credentials or
-            <a @click.stop="registerForm = true">create</a> a new account.
+            <a @click.stop="loginForm = true">login</a> using your credentials
+            or <a @click.stop="registerForm = true">create</a> a new account.
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -54,10 +54,10 @@
 
     <v-row justify="center">
       <v-dialog v-model="loginForm" max-width="450">
-        <login-form/>
+        <login-form @close="loginForm = false" />
       </v-dialog>
       <v-dialog v-model="registerForm" max-width="450">
-        <register-form/>
+        <register-form @close="registerForm = false" />
       </v-dialog>
     </v-row>
   </v-container>
@@ -66,7 +66,7 @@
 <script>
 import axios from "axios";
 import LoginForm from "@/components/LoginForm.vue";
-import RegisterForm from '@/components/RegisterForm.vue';
+import RegisterForm from "@/components/RegisterForm.vue";
 
 export default {
   name: "Home",

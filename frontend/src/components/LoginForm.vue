@@ -5,13 +5,13 @@
     </v-card-title>
     <v-card-text>
       <v-container>
-        <v-text-field type="email" label="Email"/>
-        <v-text-field type="password" label="Password"/>
-        <v-divider class="mb-2"/>
+        <v-text-field v-model="email" type="email" label="Email" />
+        <v-text-field v-model="password" type="password" label="Password" />
+        <v-divider class="mb-2" />
         Forgot password?
       </v-container>
       <v-card-actions class="justify-end">
-        <v-btn>Close</v-btn>
+        <v-btn @click="$emit('close')">Close</v-btn>
         <v-btn color="primary">Login!</v-btn>
       </v-card-actions>
     </v-card-text>
@@ -20,10 +20,14 @@
 
 <script>
 export default {
-  name: "LoginForm"
+  name: "LoginForm",
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
