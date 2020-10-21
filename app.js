@@ -15,9 +15,10 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
+app.use('/api/users', usersRouter);
+
 app.use(history());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/api/users', usersRouter);
 
 const mongoURI = process.env.mongoURI;
 mongoose.connect(mongoURI, {useNewUrlParser: true, useUnifiedTopology: true});
@@ -25,7 +26,7 @@ mongoose.connect(mongoURI, {useNewUrlParser: true, useUnifiedTopology: true});
 const db = mongoose.connection;
 
 db.on("connected",
-    console.log.bind(console, "Established connection with MongoDB")
+  console.log.bind(console, "Established connection with MongoDB")
 );
 
 module.exports = app;

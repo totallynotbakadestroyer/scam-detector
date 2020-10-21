@@ -54,10 +54,10 @@
 
     <v-row justify="center">
       <v-dialog v-model="loginForm" max-width="450">
-        <login-form @close="loginForm = false" />
+        <login-form @close="loginForm = false"/>
       </v-dialog>
       <v-dialog v-model="registerForm" max-width="450">
-        <register-form @close="registerForm = false" />
+        <register-form @close="registerForm = false"/>
       </v-dialog>
     </v-row>
   </v-container>
