@@ -3,18 +3,19 @@
     <v-card-title class="green justify-center">
       <h3 class="py-2">Login</h3>
     </v-card-title>
+    <v-alert v-if="error" class="mb-0" dismissible type="error">
+      {{ error.message }}
+    </v-alert>
     <v-card-text>
-      <v-container>
-        <v-text-field v-model="email" type="email" label="Email" />
-        <v-text-field v-model="password" type="password" label="Password" />
-        <v-divider class="mb-2" />
-        Forgot password?
-      </v-container>
-      <v-card-actions class="justify-end">
-        <v-btn @click="$emit('close')">Close</v-btn>
-        <v-btn color="primary">Login!</v-btn>
-      </v-card-actions>
+      <v-text-field v-model="email" type="email" label="Email" />
+      <v-text-field v-model="password" type="password" label="Password" />
+      <v-divider class="mb-2" />
+      Forgot password?
     </v-card-text>
+    <v-card-actions class="justify-end">
+      <v-btn @click="$emit('close')">Close</v-btn>
+      <v-btn @click="submit" color="primary">Login!</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -25,7 +26,25 @@ export default {
     return {
       email: "",
       password: "",
+      error: "",
     };
+  },
+  methods: {
+    submit() {
+      this.$store
+        .dispatch("login", { email: this.email, password: this.password })
+        .then(() => {
+          // FIXME: dummy route, should fix later
+          this.$router.push("/success");
+        })
+        .catch((err) => {
+          console.log(err);
+          this.error =
+            err.response.data.error !== undefined
+              ? err.response.data.error
+              : err.response.data;
+        });
+    },
   },
 };
 </script>
