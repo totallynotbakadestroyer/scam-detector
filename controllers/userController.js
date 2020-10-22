@@ -1,10 +1,8 @@
 const User = require("../models/UserSchema");
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 exports.signUp = function (req, res, next) {
-  console.log(req.body);
   User.find({ email: req.body.email })
     .exec()
     .then((user) => {
@@ -13,32 +11,30 @@ exports.signUp = function (req, res, next) {
           message: "User with such email already exists.",
         });
       } else {
-        bcrypt.hash(req.body.password, saltRounds, (err, hashedPassword) => {
-          if (err) {
-            return res.status(500).json({
+        const user = new User({
+          email: req.body.email,
+          username: req.body.username,
+          password: req.body.password,
+        });
+        user
+          .save()
+          .then((result) => {
+            console.log(result);
+            res.status(201).send();
+          })
+          .catch((err) => {
+            console.log(err);
+            res.status(500).json({
               error: err,
             });
-          } else {
-            const user = new User({
-              email: req.body.email,
-              username: req.body.username,
-              password: hashedPassword,
-            });
-            user
-              .save()
-              .then((result) => {
-                console.log(result);
-                res.status(201).send();
-              })
-              .catch((err) => {
-                console.log(err);
-                res.status(500).json({
-                  error: err,
-                });
-              });
-          }
-        });
+          });
       }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
     });
 };
 
