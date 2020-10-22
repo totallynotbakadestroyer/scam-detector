@@ -24,7 +24,7 @@ exports.signUp = function (req, res, next) {
           })
           .catch((err) => {
             console.log(err);
-            res.status(500).json({
+            res.status(400).json({
               error: err,
             });
           });
@@ -32,13 +32,14 @@ exports.signUp = function (req, res, next) {
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({
+      res.status(400).json({
         error: err,
       });
     });
 };
 
 exports.login = function (req, res, next) {
+  if(!req.body.email) return res.status(400).send();
   User.findOne({ email: req.body.email })
     .exec()
     .then((user) => {
@@ -49,7 +50,7 @@ exports.login = function (req, res, next) {
       } else {
         bcrypt.compare(req.body.password, user.password, (err, result) => {
           if (err) {
-            res.status(500).json({
+            res.status(400).json({
               error: err,
             });
           } else {
@@ -67,5 +68,10 @@ exports.login = function (req, res, next) {
           }
         });
       }
+    })
+    .catch((err) => {
+      res.status(400).json({
+        error: err,
+      });
     });
 };
