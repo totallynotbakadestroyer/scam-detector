@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       items: [
-        { title: "Dashboard", icon: "mdi-view-dashboard" },
+        { title: "Check user", icon: "mdi-account-search" },
         { title: "My Reports", icon: "mdi-clipboard-text-multiple" },
         { title: "New Report", icon: "mdi-clipboard-check" },
         { title: "Settings", icon: "mdi-cog" },

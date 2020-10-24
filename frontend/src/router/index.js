@@ -18,6 +18,22 @@ const routes = [
       layout: "auth",
     },
   },
+  {
+    path: "/my-reports",
+    name: "MyReports",
+    component: () => import("@/views/MyReports.vue"),
+    meta: {
+      layout: "auth",
+    },
+  },
+  {
+    path: "/check",
+    name: "Check",
+    component: () => import("@/views/Check.vue"),
+    meta: {
+      layout: "auth",
+    },
+  },
 ];
 
 const router = new VueRouter({
