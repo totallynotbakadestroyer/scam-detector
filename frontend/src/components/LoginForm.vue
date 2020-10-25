@@ -34,8 +34,7 @@ export default {
       this.$store
         .dispatch("login", { email: this.email, password: this.password })
         .then(() => {
-          // FIXME: dummy route, should fix later
-          this.$router.push("/success");
+          this.$router.push("/report");
         })
         .catch((err) => {
           console.log(err);

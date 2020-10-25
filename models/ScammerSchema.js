@@ -1,14 +1,9 @@
 const mongoose = require("mongoose");
 
 const ScammerSchema = mongoose.Schema({
-  _id: {type: String, required: true},
-  status: { enum: ['Scammer', 'Warning'] },
+  _id: { type: String, required: true },
+  status: { type: String, enum: ["Scammer", "Warning"] },
+  reports: [{ type: mongoose.Schema.Types.ObjectId, ref: "Report" }],
 });
 
-ScammerSchema
-  .virtual('url')
-  .get(function () {
-    return 'https://vk.com/id' + this._id;
-  });
-
-module.exports = mongoose.model('Scammer', ScammerSchema);
+module.exports = mongoose.model("Scammer", ScammerSchema);

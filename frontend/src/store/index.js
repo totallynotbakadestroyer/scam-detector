@@ -16,7 +16,7 @@ export default new Vuex.Store({
     },
     authSuccess(state, loginInfo) {
       state.status = "logged";
-      state.token = loginInfo.token;
+      state.userToken = loginInfo.token;
       state.userInfo = loginInfo.userInfo;
     },
     authError(state) {
@@ -24,13 +24,13 @@ export default new Vuex.Store({
     },
     logout(state) {
       state.status = "";
-      state.token = "";
-      state.username = "";
+      state.userToken = "";
+      state.userInfo = "";
       localStorage.removeItem("token");
     },
   },
   actions: {
-    login({ commit }, {email, password}) {
+    login({ commit }, { email, password }) {
       return new Promise((resolve, reject) => {
         commit("authRequest");
         axios
