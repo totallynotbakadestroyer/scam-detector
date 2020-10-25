@@ -5,8 +5,10 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var history = require("connect-history-api-fallback");
 const mongoose = require("mongoose");
+const jwt = require("express-jwt");
 
 const usersRouter = require("./routes/users.js");
+const scammerRouter = require("./routes/scammers.js");
 
 var app = express();
 
@@ -15,7 +17,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(
+  jwt({ secret: process.env.SECRET_KEY, algorithms: ["HS256"] }).unless({
+    path: ["/api/users/login", "/api/users/signup"],
+  })
+);
+
 app.use("/api/users", usersRouter);
+app.use("/api/protected", scammerRouter);
 
 app.use(history());
 app.use(express.static(path.join(__dirname, "public")));
