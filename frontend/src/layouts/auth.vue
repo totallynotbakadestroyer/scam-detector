@@ -14,7 +14,12 @@
 
       <v-divider></v-divider>
       <v-list dense nav>
-        <v-list-item v-for="item in items" :key="item.title" link>
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          link
+          :to="item.link"
+        >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -39,12 +44,16 @@ export default {
   data() {
     return {
       items: [
-        { title: "Check user", icon: "mdi-account-search" },
-        { title: "My Reports", icon: "mdi-clipboard-text-multiple" },
-        { title: "New Report", icon: "mdi-clipboard-check" },
-        { title: "Settings", icon: "mdi-cog" },
-      ],
+        { title: "Check user", icon: "mdi-account-search", link: "/check" },
+        {
+          title: "My Reports",
+          icon: "mdi-clipboard-text-multiple",
+          link: "/my-reports"
+        },
+        { title: "New Report", icon: "mdi-clipboard-check", link: "/report" },
+        { title: "Settings", icon: "mdi-cog", link: "/settings" }
+      ]
     };
-  },
+  }
 };
 </script>
