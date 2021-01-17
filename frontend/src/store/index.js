@@ -8,7 +8,7 @@ export default new Vuex.Store({
   state: {
     userToken: "",
     userInfo: "",
-    status: "",
+    status: ""
   },
   mutations: {
     authRequest(state) {
@@ -27,7 +27,7 @@ export default new Vuex.Store({
       state.userToken = "";
       state.userInfo = "";
       localStorage.removeItem("token");
-    },
+    }
   },
   actions: {
     login({ commit }, { email, password }) {
@@ -35,19 +35,19 @@ export default new Vuex.Store({
         commit("authRequest");
         axios
           .post("/api/users/login", { email, password })
-          .then((response) => {
+          .then(response => {
             const token = response.headers.authorization.split(" ")[1];
             localStorage.setItem("token", token);
             const userInfo = response.data;
             commit("authSuccess", { token, userInfo });
             resolve();
           })
-          .catch((error) => {
+          .catch(error => {
             console.log(error);
             commit("authError");
             reject(error);
           });
       });
-    },
-  },
+    }
+  }
 });

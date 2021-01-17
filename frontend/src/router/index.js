@@ -8,38 +8,38 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: Home
   },
   {
     path: "/report",
     name: "NewReport",
     component: () => import("@/views/NewReport.vue"),
     meta: {
-      layout: "auth",
-    },
+      layout: "auth"
+    }
   },
   {
     path: "/my-reports",
     name: "MyReports",
     component: () => import("@/views/MyReports.vue"),
     meta: {
-      layout: "auth",
-    },
+      layout: "auth"
+    }
   },
   {
     path: "/check",
     name: "Check",
     component: () => import("@/views/Check.vue"),
     meta: {
-      layout: "auth",
-    },
-  },
+      layout: "auth"
+    }
+  }
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes,
+  routes
 });
 
 export default router;
