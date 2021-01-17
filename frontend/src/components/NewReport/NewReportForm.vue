@@ -12,6 +12,7 @@
             placeholder="Briefly describe your report"
             v-model="payload.review"
             :error-messages="reviewErrors"
+            v-on:input="$v.payload.review.$touch"
           >
           </v-text-field>
         </v-col>
@@ -21,6 +22,7 @@
             label="Website*"
             :items="websites"
             :error-messages="websiteErrors"
+            v-on:input="$v.payload.website.$touch"
           ></v-select>
         </v-col>
         <v-col cols="12" md="6">
@@ -30,6 +32,7 @@
             label="Type*"
             row
             :items="types"
+            v-on:input="$v.payload.type.$touch"
           >
           </v-select>
         </v-col>
@@ -38,6 +41,7 @@
             placeholder="For example: https://vk.com/baka_destroyer"
             label="Link*"
             v-model="payload.link"
+            v-on:input="$v.payload.link.$touch"
             :error-messages="linkErrors"
           >
           </v-text-field>
@@ -70,7 +74,13 @@
     </v-card-text>
     <v-card-actions class="justify-center">
       <v-btn @click="resetForm" class="mr-2" color="error">Clear Report</v-btn>
-      <v-btn @click="$emit('submit', payload)" class="ml-2" color="primary"
+      <v-btn
+        @click="
+          $v.$touch();
+          !$v.$invalid && $emit('submit', payload);
+        "
+        class="ml-2"
+        color="primary"
         >Submit Report</v-btn
       >
     </v-card-actions>
@@ -99,31 +109,33 @@ export default {
     };
   },
   validations: {
-    review: {
-      required,
-      maxLength: maxLength(50)
-    },
-    website: {
-      required
-    },
-    type: {
-      required
-    },
-    link: {
-      required
+    payload: {
+      review: {
+        required,
+        maxLength: maxLength(50)
+      },
+      website: {
+        required
+      },
+      type: {
+        required
+      },
+      link: {
+        required
+      }
     }
   },
   computed: {
     reviewErrors() {
       const errors = [];
-      if (!this.$v.review.$dirty) {
+      if (!this.$v.payload.review.$dirty) {
         return errors;
       }
-      if (!this.$v.review.required) {
+      if (!this.$v.payload.review.required) {
         errors.push("Review is required");
         return errors;
       }
-      if (!this.$v.review.maxLength) {
+      if (!this.$v.payload.review.maxLength) {
         errors.push("Review should be less than 50 symbols");
         return errors;
       }
@@ -131,10 +143,10 @@ export default {
     },
     websiteErrors() {
       const errors = [];
-      if (!this.$v.website.$dirty) {
+      if (!this.$v.payload.website.$dirty) {
         return errors;
       }
-      if (!this.$v.website.required) {
+      if (!this.$v.payload.website.required) {
         errors.push("Website is required");
         return errors;
       }
@@ -142,10 +154,10 @@ export default {
     },
     typeErrors() {
       const errors = [];
-      if (!this.$v.type.$dirty) {
+      if (!this.$v.payload.type.$dirty) {
         return errors;
       }
-      if (!this.$v.type.required) {
+      if (!this.$v.payload.type.required) {
         errors.push("Type is required");
         return errors;
       }
@@ -153,11 +165,11 @@ export default {
     },
     linkErrors() {
       const errors = [];
-      if (!this.$v.link.$dirty) {
+      if (!this.$v.payload.link.$dirty) {
         return errors;
       }
 
-      if (!this.$v.link.required) {
+      if (!this.$v.payload.link.required) {
         errors.push("Link is required");
         return errors;
       }

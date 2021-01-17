@@ -17,6 +17,7 @@ const ReportSchema = new mongoose.Schema({
     required: true,
   },
   description: String,
+  proofs: {type: String, required: true},
   scammer: { type: mongoose.Schema.Types.ObjectId, ref: "Scammer" },
 });
 

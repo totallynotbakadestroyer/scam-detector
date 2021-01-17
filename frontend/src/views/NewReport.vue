@@ -7,7 +7,7 @@
     <v-snackbar
       v-model="snackbar"
       :timeout="10000"
-      :value="true"
+      :value="snackbar"
       absolute
       top
       color="error"
@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import NewReportForm from "../components/NewReport/NewReportForm.vue";
+import reportService from "../services/reports.js";
 
 export default {
   name: "NewReport",
@@ -36,27 +36,14 @@ export default {
     };
   },
   methods: {
-    submit(payload) {
-      this.$v.$touch();
-      this.snackbar = false;
-      if (!this.$v.$error) {
-        axios({
-          method: "post",
-          url: "/api/protected/report",
-          data: {
-            ...payload
-          },
-          headers: {
-            Authorization: `Bearer ${this.$store.state.userToken}`
-          }
-        })
-          .then(() => {
-            this.$refs.form.resetForm();
-          })
-          .catch(err => {
-            this.error = err.response.data.message;
-            this.snackbar = true;
-          });
+    async submit(payload) {
+      try {
+        this.snackbar = false;
+        await reportService.newReport(payload);
+        await this.$router.push("/my-reports");
+      } catch (error) {
+        this.error = error;
+        this.snackbar = true;
       }
     }
   }

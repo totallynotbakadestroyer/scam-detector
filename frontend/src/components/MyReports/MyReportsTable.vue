@@ -5,6 +5,8 @@
     </v-card-title>
     <v-card-text style="height: 100%;">
       <v-data-table
+        :loading="reports.length === 0"
+        loading-text="Loading... Please wait"
         style="height: 100%; position: relative;"
         id="table"
         :items="reports"
@@ -21,15 +23,13 @@
 </template>
 
 <script>
+import reportService from "../../services/reports.js";
+
 export default {
   name: "MyReportsTable",
   data() {
     return {
       headers: [
-        {
-          text: "Id",
-          value: "id"
-        },
         { text: "Review", value: "review" },
         { text: "Link", value: "link" },
         { text: "Type", value: "type" },
@@ -51,6 +51,10 @@ export default {
           return undefined;
       }
     }
+  },
+  async created() {
+    const { data } = await reportService.getUserReports();
+    this.reports = data;
   }
 };
 </script>
