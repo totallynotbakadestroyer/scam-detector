@@ -4,7 +4,7 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="mb-2">
-            Hey, BakaDestroyer
+            Hey, {{ $store.state.username }}
           </v-list-item-title>
           <v-list-item-subtitle>
             Log out?

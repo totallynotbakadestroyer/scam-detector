@@ -40,7 +40,7 @@ exports.signIn = async (req, res) => {
       expiresIn: 86400
     });
     res.header("Authorization", `Bearer ${token}`);
-    res.status(200).send();
+    res.status(200).json({ username: user.username });
   } catch (e) {
     res.status(400).json({ error: e.message });
   }

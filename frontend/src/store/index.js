@@ -8,7 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     userToken: "",
-    userInfo: "",
+    username: "",
     status: ""
   },
   mutations: {
@@ -18,7 +18,7 @@ export default new Vuex.Store({
     authSuccess(state, loginInfo) {
       state.status = "logged";
       state.userToken = loginInfo.token;
-      state.userInfo = loginInfo.userInfo;
+      state.username = loginInfo.username;
     },
     authError(state) {
       state.status = "error";
@@ -26,7 +26,7 @@ export default new Vuex.Store({
     logout(state) {
       state.status = "";
       state.userToken = "";
-      state.userInfo = "";
+      state.username = "";
       localStorage.removeItem("token");
     }
   },
@@ -37,8 +37,8 @@ export default new Vuex.Store({
         const response = await authService.signIn({ email, password });
         const token = response.headers.authorization.split(" ")[1];
         localStorage.setItem("token", token);
-        const userInfo = response.data;
-        commit("authSuccess", { token, userInfo });
+        const username = response.data.username;
+        commit("authSuccess", { token, username });
         await router.push("/report");
       } catch (e) {
         console.log(e);
