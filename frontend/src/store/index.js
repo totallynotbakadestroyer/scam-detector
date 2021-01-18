@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from "axios";
+import authService from "../services/auth";
+import router from "../router";
 
 Vue.use(Vuex);
 
@@ -30,24 +31,19 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    login({ commit }, { email, password }) {
-      return new Promise((resolve, reject) => {
-        commit("authRequest");
-        axios
-          .post("/api/users/login", { email, password })
-          .then(response => {
-            const token = response.headers.authorization.split(" ")[1];
-            localStorage.setItem("token", token);
-            const userInfo = response.data;
-            commit("authSuccess", { token, userInfo });
-            resolve();
-          })
-          .catch(error => {
-            console.log(error);
-            commit("authError");
-            reject(error);
-          });
-      });
+    async login({ commit }, { email, password }) {
+      commit("authRequest");
+      try {
+        const response = await authService.signIn({ email, password });
+        const token = response.headers.authorization.split(" ")[1];
+        localStorage.setItem("token", token);
+        const userInfo = response.data;
+        commit("authSuccess", { token, userInfo });
+        await router.push("/report");
+      } catch (e) {
+        console.log(e);
+        commit("authError");
+      }
     }
   }
 });

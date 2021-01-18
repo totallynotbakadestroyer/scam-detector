@@ -26,25 +26,21 @@ export default {
     return {
       email: "",
       password: "",
-      error: "",
+      error: ""
     };
   },
   methods: {
-    submit() {
-      this.$store
-        .dispatch("login", { email: this.email, password: this.password })
-        .then(() => {
-          this.$router.push("/report");
-        })
-        .catch((err) => {
-          console.log(err);
-          this.error =
-            err.response.data.error !== undefined
-              ? err.response.data.error
-              : err.response.data;
+    async submit() {
+      try {
+        await this.$store.dispatch("login", {
+          email: this.email,
+          password: this.password
         });
-    },
-  },
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
 };
 </script>
 

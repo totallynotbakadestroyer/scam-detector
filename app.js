@@ -7,7 +7,7 @@ const history = require("connect-history-api-fallback");
 const mongoose = require("mongoose");
 const jwt = require("express-jwt");
 
-const usersRouter = require("./routes/users.js");
+const authRouter = require("./routes/auth.js");
 const reportsRouter = require("./routes/reports.js");
 
 const app = express();
@@ -17,17 +17,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use(
   jwt({ secret: process.env.SECRET_KEY, algorithms: ["HS256"] }).unless({
-    path: ["/api/users/login", "/api/users/signup"]
+    path: /\/api\/auth.*/,
   })
 );
 
-app.use("/api/users", usersRouter);
+app.use("/api/auth", authRouter);
 app.use("/api", reportsRouter);
 
 app.use(history());
-app.use(express.static(path.join(__dirname, "public")));
 
 const env = process.env.NODE_ENV;
 const mongoURI =

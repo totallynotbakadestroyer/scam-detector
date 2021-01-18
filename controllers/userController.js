@@ -2,76 +2,46 @@ const User = require("../models/UserSchema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-exports.signUp = function (req, res, next) {
-  User.find({ email: req.body.email })
-    .exec()
-    .then((user) => {
-      if (user.length > 0) {
-        res.status(409).json({
-          message: "User with such email already exists.",
-        });
-      } else {
-        const user = new User({
-          email: req.body.email,
-          username: req.body.username,
-          password: req.body.password,
-        });
-        user
-          .save()
-          .then((result) => {
-            console.log(result);
-            res.status(201).send();
-          })
-          .catch((err) => {
-            console.log(err);
-            res.status(400).json({
-              error: err,
-            });
-          });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(400).json({
-        error: err,
+exports.signUp = async (req, res) => {
+  try {
+    const existingAccount = await User.findOne({ email: req.body.email });
+    if (existingAccount) {
+      return res.status(409).json({
+        message: "User with such email already exists."
       });
-    });
+    } else {
+      const user = new User({
+        email: req.body.email,
+        username: req.body.username,
+        password: req.body.password
+      });
+      await user.save();
+      res.status(201).end();
+    }
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
 };
 
-exports.login = function (req, res, next) {
-  if(!req.body.email) return res.status(400).send();
-  User.findOne({ email: req.body.email })
-    .exec()
-    .then((user) => {
-      if (!user) {
-        res.status(401).json({
-          message: "Wrong email/password.",
-        });
-      } else {
-        bcrypt.compare(req.body.password, user.password, (err, result) => {
-          if (err) {
-            res.status(400).json({
-              error: err,
-            });
-          } else {
-            if (!result)
-              return res.status(401).json({ message: "Wrong email/password." });
-            else {
-              let token = jwt.sign(
-                { userId: user._id },
-                process.env.SECRET_KEY,
-                { expiresIn: 86400 }
-              );
-              res.header("Authorization", "Bearer " + token);
-              res.status(200).send();
-            }
-          }
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(400).json({
-        error: err,
+exports.signIn = async (req, res) => {
+  if (!req.body.email || !req.body.password) return res.status(400).send();
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(401).json({
+        error: "Wrong email/password."
       });
+    }
+    const result = await bcrypt.compare(req.body.password, user.password);
+    if (!result) {
+      return res.status(401).json({ message: "Wrong email/password." });
+    }
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
+      expiresIn: 86400
     });
+    res.header("Authorization", `Bearer ${token}`);
+    res.status(200).send();
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
 };
