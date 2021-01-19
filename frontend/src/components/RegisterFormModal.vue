@@ -87,25 +87,25 @@ export default {
       email: "",
       password: "",
       passwordRepeat: "",
-      step: 1,
+      step: 1
     };
   },
   validations: {
     username: {
-      required,
+      required
     },
     email: {
       required,
-      email,
+      email
     },
     password: {
       required,
-      minLength: minLength(6),
+      minLength: minLength(6)
     },
     passwordRepeat: {
       required,
-      sameAsPassword: sameAs("password"),
-    },
+      sameAsPassword: sameAs("password")
+    }
   },
   created() {
     this.$v.$touch();
@@ -166,7 +166,7 @@ export default {
         return errors;
       }
       return errors;
-    },
+    }
   },
   methods: {
     submit() {
@@ -177,13 +177,13 @@ export default {
           .post("/api/users/signup", {
             username: this.username,
             email: this.email,
-            password: this.password,
+            password: this.password
           })
-          .then((result) => {
+          .then(result => {
             console.log(result);
             this.step = 2;
           })
-          .catch((err) => {
+          .catch(err => {
             console.log(err.response.data);
             this.error =
               err.response.data.error !== undefined
@@ -191,8 +191,8 @@ export default {
                 : err.response.data;
           });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

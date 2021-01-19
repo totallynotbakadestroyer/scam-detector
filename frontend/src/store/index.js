@@ -40,9 +40,11 @@ export default new Vuex.Store({
         const username = response.data.username;
         commit("authSuccess", { token, username });
         await router.push("/report");
+        return response;
       } catch (e) {
         console.log(e);
         commit("authError");
+        throw e;
       }
     }
   }

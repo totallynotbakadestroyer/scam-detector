@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import LoginForm from "../components/LoginForm.vue";
-import RegisterForm from "../components/RegisterForm.vue";
+import LoginForm from "../components/LoginFormModal.vue";
+import RegisterForm from "../components/RegisterFormModal.vue";
 import FastCheckPanel from "../components/HomePage/FastCheckPanel.vue";
 import LoginAndRegisterPanel from "../components/HomePage/LoginAndRegisterPanel.vue";
 
