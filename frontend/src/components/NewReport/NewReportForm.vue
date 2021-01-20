@@ -1,8 +1,5 @@
 <template>
-  <v-card class="d-flex flex-column" width="100%" height="100%">
-    <v-card-title>
-      New report
-    </v-card-title>
+  <div class="d-flex flex-column" style="width: 100%; height: 100%">
     <v-card-text class="fill-height">
       <v-row>
         <v-col cols="12">
@@ -51,7 +48,7 @@
             placeholder="Explain why we should add this user/group to our database"
             auto-grow
             clearable
-            rows="2"
+            rows="1"
             label="Description"
             v-model="payload.description"
           ></v-textarea>
@@ -84,7 +81,7 @@
         >Submit Report</v-btn
       >
     </v-card-actions>
-  </v-card>
+  </div>
 </template>
 
 <script>
@@ -94,16 +91,25 @@ import { required, maxLength } from "vuelidate/lib/validators";
 export default {
   name: "NewReportForm",
   mixins: [validationMixin],
+  props: {
+    payload: {
+      type: Object,
+      default() {
+        return {
+          payload: {
+            review: "",
+            website: "",
+            type: "",
+            link: "",
+            description: "",
+            proofs: ""
+          }
+        };
+      }
+    }
+  },
   data() {
     return {
-      payload: {
-        review: "",
-        website: "",
-        type: "",
-        link: "",
-        description: "",
-        proofs: ""
-      },
       websites: ["vk.com"],
       types: ["user", "group"]
     };

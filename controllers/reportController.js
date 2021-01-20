@@ -52,16 +52,24 @@ exports.allUserReports = async (req, res) => {
 
 exports.updateReport = async (req, res) => {
   const id = req.params.id;
-  const updatedReport = req.body.payload;
+  const updatedReport = req.body;
   const report = await Report.findById(id);
   if (!report) {
     return res
       .status(400)
       .json({ error: "Report with provided id does not exist" });
   }
+  if (report.status !== "pending") {
+    return res.status(400).json({
+      error:
+        "Due to platform principles you can update only pending reports."
+    });
+  }
   try {
-    await report.update(updatedReport);
-    res.end();
+    const result = await Report.findByIdAndUpdate(id, updatedReport, {
+      new: true
+    });
+    res.json(result);
   } catch (e) {
     res.status(400).json({ error: e.message });
   }

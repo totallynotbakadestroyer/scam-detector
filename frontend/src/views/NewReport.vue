@@ -1,8 +1,5 @@
 <template>
   <v-card class="d-flex flex-column" width="100%" height="100%">
-    <v-card-title>
-      New report
-    </v-card-title>
     <new-report-form v-on:submit="submit" ref="form" />
     <v-snackbar
       v-model="snackbar"
