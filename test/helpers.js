@@ -72,7 +72,7 @@ const initialReports = [
   },
   {
     _id: "6008acf3c80627be7b774f2e",
-    review: "Competitions ortum! ",
+    review: "Competitions ortum!",
     link: "iamalinktrustme",
     status: "approved",
     description: "Cur olla observare?",
@@ -84,7 +84,7 @@ const initialReports = [
   },
   {
     _id: "6008acee4b31b0d889c396b2",
-    review: "Humani generiss experimentum! ",
+    review: "Humani generiss experimentum!",
     link: "iamalinktrustme",
     status: "approved",
     description: "Cur olla observare?",
@@ -96,12 +96,24 @@ const initialReports = [
   }
 ];
 
+const reportToCreate = {
+  _id: "6009691f591ce8508329c79f",
+  review: "Cool test report",
+  link: "iamalinktrustme",
+  description: "do androids dream of test reports",
+  proofs: "proofs",
+  website: "vk.com",
+  type: "user"
+};
+
 const usersInDb = async () => {
-  return User.find({});
+  const users = await User.find({});
+  return users.map(user => user.toObject());
 };
 
 const reportsInDb = async () => {
-  return Report.find({});
+  const reports = await Report.find({});
+  return reports.map(report => report.toObject());
 };
 
 const generateTestJwt = async () => {
@@ -118,5 +130,6 @@ module.exports = {
   initialUsers,
   usersInDb,
   reportsInDb,
-  generateTestJwt
+  generateTestJwt,
+  reportToCreate
 }
