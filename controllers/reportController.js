@@ -6,8 +6,8 @@ exports.newReport = async (req, res) => {
     ...req.body
   });
   try {
-    await report.save();
-    res.status(201).end();
+    const savedReport = await report.save();
+    res.status(201).json(savedReport);
   } catch (e) {
     console.log(e);
     res.status(400).json({
@@ -25,7 +25,7 @@ exports.deleteReport = async (req, res) => {
       .json({ error: "Report with provided id does not exist" });
   }
   if (report.status === "approved") {
-    return res.status(400).json({
+    return res.status(403).json({
       error:
         "Due to platform principles only pending or rejected reports are deletable"
     });
@@ -60,7 +60,7 @@ exports.updateReport = async (req, res) => {
       .json({ error: "Report with provided id does not exist" });
   }
   if (report.status !== "pending") {
-    return res.status(400).json({
+    return res.status(403).json({
       error:
         "Due to platform principles you can update only pending reports."
     });
